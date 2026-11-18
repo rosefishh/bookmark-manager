@@ -1,11 +1,12 @@
 package com.rosefishh.bookmark_manager.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bookmarks")
@@ -21,16 +22,21 @@ public class Bookmark {
     @Column(nullable = false)
     private String url;
 
-    @Column
+    @Column(length = 1000)
     private String description;
 
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
     public Bookmark() {
+        this.createdAt = LocalDateTime.now();
     }
 
     public Bookmark(String title, String url, String description) {
         this.title = title;
         this.url = url;
         this.description = description;
+        this.createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -63,5 +69,13 @@ public class Bookmark {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

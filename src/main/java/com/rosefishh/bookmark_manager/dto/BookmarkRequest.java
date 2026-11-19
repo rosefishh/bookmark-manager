@@ -2,6 +2,7 @@ package com.rosefishh.bookmark_manager.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 
 public class BookmarkRequest {
 
@@ -15,13 +16,16 @@ public class BookmarkRequest {
     @Size(max = 1000, message = "Description must not exceed 1000 characters")
     private String description;
 
+    private List<String> tags;
+
     public BookmarkRequest() {
     }
 
-    public BookmarkRequest(String title, String url, String description) {
+    public BookmarkRequest(String title, String url, String description, List<String> tags) {
         this.title = title;
         this.url = url;
         this.description = description;
+        this.tags = tags;
     }
 
     public String getTitle() {
@@ -46,5 +50,13 @@ public class BookmarkRequest {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }

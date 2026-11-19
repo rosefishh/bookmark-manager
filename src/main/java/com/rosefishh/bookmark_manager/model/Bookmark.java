@@ -40,6 +40,9 @@ public class Bookmark {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(unique = true)
+    private String shortCode;   
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "bookmark_tags",
@@ -116,4 +119,11 @@ public class Bookmark {
         this.tags.remove(tag);
         tag.getBookmarks().remove(this);
     }
+    public String getShortCode() {
+    return shortCode;
+}
+
+public void setShortCode(String shortCode) {
+    this.shortCode = shortCode;
+}
 }

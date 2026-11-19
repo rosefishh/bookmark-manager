@@ -1,6 +1,7 @@
 package com.rosefishh.bookmark_manager.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class BookmarkResponse {
 
@@ -9,16 +10,18 @@ public class BookmarkResponse {
     private String url;
     private String description;
     private LocalDateTime createdAt;
+    private List<String> tags;
 
     public BookmarkResponse() {
     }
 
-    public BookmarkResponse(Long id, String title, String url, String description, LocalDateTime createdAt) {
+    public BookmarkResponse(Long id, String title, String url, String description, LocalDateTime createdAt, List<String> tags) {
         this.id = id;
         this.title = title;
         this.url = url;
         this.description = description;
         this.createdAt = createdAt;
+        this.tags = tags;
     }
 
     public Long getId() {
@@ -59,5 +62,13 @@ public class BookmarkResponse {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }

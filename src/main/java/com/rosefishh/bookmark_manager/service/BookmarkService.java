@@ -4,6 +4,7 @@ import com.rosefishh.bookmark_manager.dto.BookmarkRequest;
 import com.rosefishh.bookmark_manager.dto.BookmarkResponse;
 import com.rosefishh.bookmark_manager.exception.BookmarkNotFoundException;
 import com.rosefishh.bookmark_manager.model.Bookmark;
+import com.rosefishh.bookmark_manager.model.Tag;
 import com.rosefishh.bookmark_manager.repository.BookmarkRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,12 +58,16 @@ public class BookmarkService {
     }
 
     private BookmarkResponse toResponse(Bookmark bookmark) {
+        List<String> tagNames = bookmark.getTags().stream()
+                .map(Tag::getName)
+                .collect(Collectors.toList());
         return new BookmarkResponse(
                 bookmark.getId(),
                 bookmark.getTitle(),
                 bookmark.getUrl(),
                 bookmark.getDescription(),
-                bookmark.getCreatedAt()
+                bookmark.getCreatedAt(),
+                tagNames
         );
     }
 }

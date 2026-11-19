@@ -49,6 +49,7 @@ private static final SecureRandom RANDOM = new SecureRandom();
 
     public BookmarkResponse createBookmark(BookmarkRequest request) {
         Bookmark bookmark = new Bookmark(request.getTitle(), request.getUrl(), request.getDescription());
+        bookmark.setShortCode(generateShortCode());
 
         if (request.getTags() != null) {
             for (String tagName : request.getTags()) {

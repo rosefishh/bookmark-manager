@@ -6,6 +6,7 @@ import com.rosefishh.bookmark_manager.exception.BookmarkNotFoundException;
 import com.rosefishh.bookmark_manager.model.Bookmark;
 import com.rosefishh.bookmark_manager.model.Tag;
 import com.rosefishh.bookmark_manager.repository.BookmarkRepository;
+import com.rosefishh.bookmark_manager.repository.TagRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +18,11 @@ import java.util.stream.Collectors;
 public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
+    private final TagRepository tagRepository;
 
-    public BookmarkService(BookmarkRepository bookmarkRepository) {
+    public BookmarkService(BookmarkRepository bookmarkRepository, TagRepository tagRepository) {
         this.bookmarkRepository = bookmarkRepository;
+        this.tagRepository = tagRepository;
     }
 
     public List<BookmarkResponse> getAllBookmarks() {
@@ -34,8 +37,27 @@ public class BookmarkService {
         return toResponse(bookmark);
     }
 
+    public List<BookmarkResponse> findBookmarksByTag(String tagName) {
+        List<Bookmark> bookmarks = bookmarkRepository.findByTagsName(tagName);
+        return bookmarks.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
     public BookmarkResponse createBookmark(BookmarkRequest request) {
         Bookmark bookmark = new Bookmark(request.getTitle(), request.getUrl(), request.getDescription());
+
+        if (request.getTags() != null) {
+            for (String tagName : request.getTags()) {
+                Tag tag = tagRepository.findByName(tagName);
+                if (tag == null) {
+                    tag = new Tag(tagName);
+                    tag = tagRepository.save(tag);
+                }
+                bookmark.addTag(tag);
+            }
+        }
+
         Bookmark saved = bookmarkRepository.save(bookmark);
         return toResponse(saved);
     }

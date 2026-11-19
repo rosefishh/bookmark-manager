@@ -9,7 +9,7 @@ import com.rosefishh.bookmark_manager.repository.BookmarkRepository;
 import com.rosefishh.bookmark_manager.repository.TagRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +19,9 @@ public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
     private final TagRepository tagRepository;
+
+    private static final String CHAR_POOL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+private static final SecureRandom RANDOM = new SecureRandom();
 
     public BookmarkService(BookmarkRepository bookmarkRepository, TagRepository tagRepository) {
         this.bookmarkRepository = bookmarkRepository;
@@ -78,6 +81,14 @@ public class BookmarkService {
         }
         bookmarkRepository.deleteById(id);
     }
+    private String generateShortCode() {
+    StringBuilder code = new StringBuilder(6);
+    for (int i = 0; i < 6; i++) {
+        int randomIndex = RANDOM.nextInt(CHAR_POOL.length());
+        code.append(CHAR_POOL.charAt(randomIndex));
+    }
+    return code.toString();
+}
 
     private BookmarkResponse toResponse(Bookmark bookmark) {
         List<String> tagNames = bookmark.getTags().stream()

@@ -9,4 +9,5 @@ import java.util.List;
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
     List<Bookmark> findByTagsName(String tagName);
+    Bookmark findByShortCode(String shortCode);
 }
